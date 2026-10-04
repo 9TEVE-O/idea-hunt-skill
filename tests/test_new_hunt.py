@@ -17,7 +17,13 @@ def run(title, outdir):
 class NewHuntTests(unittest.TestCase):
     def test_slugify(self):
         self.assertEqual(new_hunt.slugify("Legal Intake for SMBs!"), "legal-intake-for-smbs")
-        self.assertEqual(new_hunt.slugify("!!!"), "hunt")
+        self.assertTrue(new_hunt.slugify("!!!").startswith("hunt-"))
+        self.assertNotEqual(new_hunt.slugify("!!!"), new_hunt.slugify("???"))
+
+    def test_non_ascii_titles_stay_distinct(self):
+        a, b = new_hunt.slugify("कानूनी सेवाएं"), new_hunt.slugify("法律事務所")
+        self.assertNotEqual(a, b)
+        self.assertNotIn("hunt", a)
 
     def test_creates_file_in_custom_dir_with_substitutions(self):
         with tempfile.TemporaryDirectory() as d:

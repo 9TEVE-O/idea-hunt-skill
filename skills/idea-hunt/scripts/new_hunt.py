@@ -2,6 +2,7 @@
 """Scaffold docs/idea-hunt-<slug>.md from the template (never overwrites)."""
 import argparse
 import datetime
+import hashlib
 import pathlib
 import re
 import sys
@@ -10,7 +11,10 @@ TEMPLATE = pathlib.Path(__file__).resolve().parent.parent / "templates" / "hunt-
 
 
 def slugify(text: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "hunt"
+    slug = re.sub(r"[\W_]+", "-", text.lower()).strip("-")
+    if not slug:  # e.g. punctuation-only title: keep distinct titles on distinct files
+        slug = "hunt-" + hashlib.sha1(text.encode()).hexdigest()[:8]
+    return slug
 
 
 def main() -> int:
