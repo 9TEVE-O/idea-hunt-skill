@@ -30,12 +30,12 @@ def main() -> int:
         return 0
     out.parent.mkdir(parents=True, exist_ok=True)
     body = (
-        TEMPLATE.read_text()
+        TEMPLATE.read_text(encoding="utf-8")
         .replace("{{TITLE}}", args.title)
         .replace("{{SLUG}}", slug)
         .replace("{{DATE}}", datetime.date.today().isoformat())
     )
-    out.write_text(body)
+    out.write_text(body, encoding="utf-8")
     print(f"created: {out}")
     return 0
 

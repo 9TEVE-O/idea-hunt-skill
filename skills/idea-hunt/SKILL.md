@@ -115,8 +115,9 @@ into the artifact:
    unprompted, exactly where the current software fails. B2B categories (accounting, HR,
    legal-tech, healthcare admin) are especially rich.
 3. **Follow the money = willingness to pay.** Search **Upwork / Fiverr** gigs for the task.
-   A posted job is not a complaint — it is a **purchase order**: proof the pain is worth
-   paying to fix *right now*. Note the going rate; that's your pricing anchor.
+   A posted job is not a complaint — it is a **stated intent to pay**: a strong signal the pain
+   is worth fixing *right now*. Record the posted budget as a *requested rate*, not completed
+   spend (claim real spend only where the source confirms payment). It's a pricing anchor.
 4. **Community lurking** — the subreddits / Slacks / Discords where the ICP already vents.
 
 Capture per complaint cluster: the **workflow**, **who owns it**, **what they pay today**,

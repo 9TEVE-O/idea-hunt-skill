@@ -54,6 +54,12 @@ class ScoreTests(unittest.TestCase):
         self.assertEqual(r.returncode, 2)
         self.assertNotIn("Traceback", r.stderr)
 
+    def test_table_names_cannot_break_markdown_rows(self):
+        out = score.render([score.evaluate(cand("a|b\nc\\d"))])
+        row = [l for l in out.splitlines() if l.startswith("| a")][0]
+        self.assertIn("a\\|b c\\\\d", row)
+        self.assertEqual(len([l for l in out.splitlines() if l.startswith("|")]), 3)
+
     def test_cli_exit_codes(self):
         ok = subprocess.run([sys.executable, str(SCRIPTS / "score.py")], input=json.dumps([cand("a")]),
                             capture_output=True, text=True)

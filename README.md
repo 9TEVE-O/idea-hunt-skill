@@ -13,7 +13,7 @@ It doesn't invent ideas from a blank page. It hunts for workflows people *alread
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-8b5cf6.svg?style=flat-square&logo=anthropic&logoColor=white)](https://docs.claude.com/en/docs/claude-code/skills)
 [![Version](https://img.shields.io/badge/version-2.1.0-3b82f6.svg?style=flat-square)](./skills/idea-hunt/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b.svg?style=flat-square)](#-contributing)
-[![Portable](https://img.shields.io/badge/single%20file-no%20build%20step-64748b.svg?style=flat-square)](./skills/idea-hunt/SKILL.md)
+[![Portable](https://img.shields.io/badge/skill%20package-no%20build%20step-64748b.svg?style=flat-square)](./skills/idea-hunt/SKILL.md)
 
 <sub>Built for founders · indie hackers · solo builders · micro-SaaS makers</sub>
 
@@ -110,7 +110,7 @@ flowchart TD
 | Stage | What happens |
 |-------|--------------|
 | **0 · Frame** | Pick the search surface — a domain you know, a customer you can reach in 72h, a constraint (B2B/B2C, budget, geography). |
-| **1 · Pain mining** | Surface real complaints & proof of spend: `last30days` + **G2/Capterra 1–3★ feature-gap reviews** + **Upwork/Fiverr gigs** (a posted gig is a *purchase order*). |
+| **1 · Pain mining** | Surface real complaints & proof of spend: `last30days` + **G2/Capterra 1–3★ feature-gap reviews** + **Upwork/Fiverr gigs** (a posted gig is stated intent to pay, recorded as a requested rate, not completed spend). |
 | **2 · Candidate slate** | Turn pain into 5–8 candidates, each phrased as *replacing a specific incumbent and selling the finished outcome*. |
 | **3 · Kill-gates** | Score every candidate against 6 gates — painkiller, AI-native fit, reachable owner, urgency, buildability, durable moat. Any hard-fail = rejected. |
 | **4 · Demand reality** | Run survivors through `office-hours`' six forcing questions + **The Mom Test** (ask about past behavior & spend; never pitch). |
@@ -185,7 +185,7 @@ git clone https://github.com/ANVEAI/idea-hunt-skill.git
 cp -r idea-hunt-skill/skills/idea-hunt ~/.claude/skills/idea-hunt
 ```
 
-**Other agent runtimes** — copy `skills/idea-hunt/SKILL.md` into your skills directory (`~/.agents/skills/`, `~/.codex/skills/`, an `npx skills add` target, etc.).
+**Other agent runtimes** — copy the whole `skills/idea-hunt/` directory (including `scripts/` and `templates/`) into your skills directory (`~/.agents/skills/`, `~/.codex/skills/`, an `npx skills add` target, etc.).
 
 ---
 

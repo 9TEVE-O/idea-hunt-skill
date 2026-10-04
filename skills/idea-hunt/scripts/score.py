@@ -49,7 +49,9 @@ def render(results: list) -> str:
     for r in ranked:
         cells = " | ".join(str(r["scores"][g]) for g in GATES)
         verdict = "SURVIVES" if r["survives"] else "REJECTED: " + "; ".join(r["reasons"])
-        rows.append(f"| {r['name']} | {cells} | {r['total']}/12 | {verdict} |")
+        name = r["name"].replace("\\", "\\\\").replace("|", "\\|")
+        name = name.replace("\r", " ").replace("\n", " ")
+        rows.append(f"| {name} | {cells} | {r['total']}/12 | {verdict} |")
     n = sum(r["survives"] for r in results)
     return "\n".join([head, sep, *rows, "", f"{n} of {len(results)} survive."])
 
