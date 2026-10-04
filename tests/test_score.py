@@ -40,6 +40,20 @@ class ScoreTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             score.evaluate({"name": "a", "scores": {"painkiller": 2}})
 
+    def test_rejects_non_integer_and_malformed_input(self):
+        for bad in (True, 1.0, "2", None):
+            with self.assertRaises(ValueError):
+                score.evaluate(cand("a", moat=bad))
+        for bad in (1, "x", {"name": 3}, {"name": "a", "scores": []}):
+            with self.assertRaises(ValueError):
+                score.evaluate(bad)
+
+    def test_cli_malformed_list_exits_2_without_traceback(self):
+        r = subprocess.run([sys.executable, str(SCRIPTS / "score.py")], input="[1]",
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 2)
+        self.assertNotIn("Traceback", r.stderr)
+
     def test_cli_exit_codes(self):
         ok = subprocess.run([sys.executable, str(SCRIPTS / "score.py")], input=json.dumps([cand("a")]),
                             capture_output=True, text=True)

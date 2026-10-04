@@ -11,9 +11,9 @@ It doesn't invent ideas from a blank page. It hunts for workflows people *alread
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg?style=flat-square)](./LICENSE)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-8b5cf6.svg?style=flat-square&logo=anthropic&logoColor=white)](https://docs.claude.com/en/docs/claude-code/skills)
-[![Version](https://img.shields.io/badge/version-2.1.0-3b82f6.svg?style=flat-square)](./SKILL.md)
+[![Version](https://img.shields.io/badge/version-2.1.0-3b82f6.svg?style=flat-square)](./skills/idea-hunt/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b.svg?style=flat-square)](#-contributing)
-[![Portable](https://img.shields.io/badge/single%20file-no%20build%20step-64748b.svg?style=flat-square)](./SKILL.md)
+[![Portable](https://img.shields.io/badge/single%20file-no%20build%20step-64748b.svg?style=flat-square)](./skills/idea-hunt/SKILL.md)
 
 <sub>Built for founders · indie hackers · solo builders · micro-SaaS makers</sub>
 
@@ -171,7 +171,7 @@ First customers come from hand-to-hand outreach & communities — **not** day-1 
 
 ## 📦 Installation
 
-idea-hunt ships as a Claude Code plugin: `skills/idea-hunt/SKILL.md` (the method), `scripts/score.py` (mechanical kill-gate scoring), `scripts/new_hunt.py` (artifact scaffold), and an `agents/pain-miner.md` subagent. Standard-library Python only, no build step. Run tests with `python3 -m unittest discover -s tests`.
+idea-hunt ships as a Claude Code plugin: `skills/idea-hunt/SKILL.md` (the method), `skills/idea-hunt/scripts/score.py` (mechanical kill-gate scoring), `skills/idea-hunt/scripts/new_hunt.py` (artifact scaffold), and an `agents/pain-miner.md` subagent. Standard-library Python only, no build step. Run tests with `python3 -m unittest discover -s tests`.
 
 **Claude Code plugin (recommended)** — includes the skill, a `pain-miner` subagent, and the gate scorer
 ```bash
@@ -185,7 +185,7 @@ git clone https://github.com/ANVEAI/idea-hunt-skill.git
 cp -r idea-hunt-skill/skills/idea-hunt ~/.claude/skills/idea-hunt
 ```
 
-**Other agent runtimes** — copy `SKILL.md` into your skills directory (`~/.agents/skills/`, `~/.codex/skills/`, an `npx skills add` target, etc.).
+**Other agent runtimes** — copy `skills/idea-hunt/SKILL.md` into your skills directory (`~/.agents/skills/`, `~/.codex/skills/`, an `npx skills add` target, etc.).
 
 ---
 

@@ -16,13 +16,18 @@ MIN_TOTAL = 8
 
 
 def evaluate(candidate: dict) -> dict:
-    scores = candidate.get("scores", {})
+    if not isinstance(candidate, dict) or not isinstance(candidate.get("name"), str):
+        raise ValueError(f"each candidate must be an object with a string 'name', got {candidate!r}")
+    scores = candidate.get("scores")
+    if not isinstance(scores, dict):
+        raise ValueError(f"{candidate['name']}: 'scores' must be an object")
     missing = [g for g in GATES if g not in scores]
     if missing:
-        raise ValueError(f"{candidate.get('name', '?')}: missing gates {missing}")
+        raise ValueError(f"{candidate['name']}: missing gates {missing}")
     for g in GATES:
-        if scores[g] not in (0, 1, 2):
-            raise ValueError(f"{candidate.get('name', '?')}: {g} must be 0, 1 or 2")
+        v = scores[g]
+        if type(v) is not int or v not in (0, 1, 2):
+            raise ValueError(f"{candidate['name']}: {g} must be the integer 0, 1 or 2")
     total = sum(scores[g] for g in GATES)
     reasons = [f"hard-fail on {g}" for g in GATES if scores[g] == 0]
     if total < MIN_TOTAL:
