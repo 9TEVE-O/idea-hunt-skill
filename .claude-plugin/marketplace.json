@@ -1,0 +1,12 @@
+{
+  "name": "idea-hunt-marketplace",
+  "description": "Evidence-first AI business idea discovery and validation.",
+  "owner": { "name": "ANVEAI" },
+  "plugins": [
+    {
+      "name": "idea-hunt",
+      "source": "./",
+      "description": "Evidence-first AI business idea hunter with kill-gate scoring and proof-of-wallet validation."
+    }
+  ]
+}

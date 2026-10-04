@@ -1,0 +1,8 @@
+{
+  "name": "idea-hunt",
+  "version": "2.1.0",
+  "description": "Evidence-first AI business idea hunter: mine real pain, kill weak candidates with scored gates, require proof of wallet before any build.",
+  "author": { "name": "ANVEAI" },
+  "license": "MIT",
+  "keywords": ["startup", "idea-validation", "micro-saas", "market-research", "mom-test"]
+}

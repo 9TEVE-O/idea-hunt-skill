@@ -11,7 +11,7 @@ It doesn't invent ideas from a blank page. It hunts for workflows people *alread
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg?style=flat-square)](./LICENSE)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-8b5cf6.svg?style=flat-square&logo=anthropic&logoColor=white)](https://docs.claude.com/en/docs/claude-code/skills)
-[![Version](https://img.shields.io/badge/version-2.0.0-3b82f6.svg?style=flat-square)](./SKILL.md)
+[![Version](https://img.shields.io/badge/version-2.1.0-3b82f6.svg?style=flat-square)](./SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-f59e0b.svg?style=flat-square)](#-contributing)
 [![Portable](https://img.shields.io/badge/single%20file-no%20build%20step-64748b.svg?style=flat-square)](./SKILL.md)
 
@@ -171,12 +171,18 @@ First customers come from hand-to-hand outreach & communities — **not** day-1 
 
 ## 📦 Installation
 
-idea-hunt is a **single, self-contained `SKILL.md`** — plain Markdown + YAML frontmatter, no build step.
+idea-hunt ships as a Claude Code plugin: `skills/idea-hunt/SKILL.md` (the method), `scripts/score.py` (mechanical kill-gate scoring), `scripts/new_hunt.py` (artifact scaffold), and an `agents/pain-miner.md` subagent. Standard-library Python only, no build step. Run tests with `python3 -m unittest discover -s tests`.
 
-**Claude Code / Claude Desktop**
+**Claude Code plugin (recommended)** — includes the skill, a `pain-miner` subagent, and the gate scorer
+```bash
+/plugin marketplace add ANVEAI/idea-hunt-skill
+/plugin install idea-hunt@idea-hunt-marketplace
+```
+
+**Skill only**
 ```bash
 git clone https://github.com/ANVEAI/idea-hunt-skill.git
-cp -r idea-hunt-skill ~/.claude/skills/idea-hunt
+cp -r idea-hunt-skill/skills/idea-hunt ~/.claude/skills/idea-hunt
 ```
 
 **Other agent runtimes** — copy `SKILL.md` into your skills directory (`~/.agents/skills/`, `~/.codex/skills/`, an `npx skills add` target, etc.).
@@ -258,7 +264,7 @@ Issues and pull requests are welcome. High-value contributions:
 - 💵 Additional proof-of-wallet patterns
 - 📈 Real-world case studies of hunts that shipped
 
-**Keep the skill portable** — a single `SKILL.md`, no build step.
+**Keep it dependency-free** — Markdown plus standard-library Python, no build step.
 
 ---
 
