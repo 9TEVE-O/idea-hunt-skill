@@ -1,6 +1,6 @@
 ---
 name: idea-hunt
-version: "2.0.0"
+version: "2.1.0"
 description: |
   Find a painful, already-paid-for workflow that AI can now replace — then prove it with
   real willingness-to-pay before building. Inverts the usual "invent an idea" prompt:
@@ -88,7 +88,8 @@ open-ended, ask (via AskUserQuestion) for **one** anchor — enough to aim, not 
 - **A customer they can reach in 72h** (who do they already have access to?).
 - **A constraint** (B2B vs B2C, budget, geography — e.g. India-first vs global).
 
-Write the frame to `docs/idea-hunt-<slug>.md` (create `docs/` if needed). This file is the
+Scaffold the artifact with `python3 ${CLAUDE_SKILL_DIR}/scripts/new_hunt.py "<niche>"` (creates
+`docs/idea-hunt-<slug>.md`; resumes if it exists), then write the frame into it. This file is the
 running artifact for the whole hunt.
 
 > Bias: **B2B and prosumer beats consumer** for cold-start-in-72h. Businesses pay fast, pay
@@ -102,7 +103,8 @@ Goal: surface **verbatim complaints** and **proof of spend** about existing work
 You want people saying "I hate that I still do this manually", "X is too expensive/clunky",
 "I pay someone $__ to…". Founders who win *mine complaints*; they don't brainstorm.
 
-Run these in parallel and log every hit into the artifact:
+Run these in parallel (the `pain-miner` subagent can take one workflow each) and log every hit
+into the artifact:
 
 1. **`last30days`** on the domain and on incumbent tools — e.g.
    `last30days pain points [workflow]`, `last30days [incumbent tool] alternatives`,
@@ -113,8 +115,9 @@ Run these in parallel and log every hit into the artifact:
    unprompted, exactly where the current software fails. B2B categories (accounting, HR,
    legal-tech, healthcare admin) are especially rich.
 3. **Follow the money = willingness to pay.** Search **Upwork / Fiverr** gigs for the task.
-   A posted job is not a complaint — it is a **purchase order**: proof the pain is worth
-   paying to fix *right now*. Note the going rate; that's your pricing anchor.
+   A posted job is not a complaint — it is a **stated intent to pay**: a strong signal the pain
+   is worth fixing *right now*. Record the posted budget as a *requested rate*, not completed
+   spend (claim real spend only where the source confirms payment). It's a pricing anchor.
 4. **Community lurking** — the subreddits / Slacks / Discords where the ICP already vents.
 
 Capture per complaint cluster: the **workflow**, **who owns it**, **what they pay today**,
@@ -171,6 +174,8 @@ by fudging a gate.
 > **permanence** (being the obvious default in a niche) over a fragile technical moat.
 
 Score each gate 0 (fail) / 1 (weak) / 2 (strong). Reject anything with a 0 or total < 8/12.
+Write scores to a JSON list and run `python3 ${CLAUDE_SKILL_DIR}/scripts/score.py candidates.json`
+(see `--help` for the format) so the cutoff is applied mechanically, not by feel.
 Write the scored table into the artifact and **explicitly list what you rejected and why** —
 the rejections are as valuable as the pick.
 
@@ -277,6 +282,14 @@ Now — and only now — generate the execution plan. Decision-grade, not a 44-i
 
 ## Operating rules
 
+- **Evidence integrity.** Never invent quotes, prices, counts, or sources. Label each quote
+  `verbatim` or `paraphrase` and keep its URL. "No evidence found" is a valid result; say it.
+- **Ethics screen (part of Gate 1 and Stage 5).** Reject or flag candidates whose value comes
+  from deceiving users, scraping personal data without basis, or automating consequential
+  decisions about people (credit, hiring, medical, legal outcomes) with no human review path.
+  Regulated domains need a named human-in-the-loop in the blueprint.
+- **Statistics are claims, not facts.** The figures in the core thesis come from secondary
+  sources; re-verify before quoting them in anything customer- or investor-facing.
 - **Evidence over eloquence.** Every demand claim traces to a STAGE 1 verbatim, a paid gig, or
   a STAGE 4.5 dollar. No unsupported "people would love this."
 - **Cash > opinions.** A landing-page signup is interest; a deposit is demand. Weight them
@@ -301,6 +314,12 @@ Now — and only now — generate the execution plan. Decision-grade, not a 44-i
 ---
 <!--
 Changelog
+2.1.0 — Packaged as a Claude Code plugin (plugin.json, marketplace.json, tests). Added:
+        scripts/score.py (applies the Stage 3 rule mechanically), scripts/new_hunt.py (hunt
+        artifact scaffold), agents/pain-miner.md (Stage 1 evidence gatherer), evidence-integrity
+        and ethics-screen operating rules, and a caveat that the thesis statistics are
+        secondary-source claims. Changed: Upwork/Fiverr postings are recorded as requested
+        rates (stated intent to pay), not completed spend. Stage 3 rule and gate names unchanged.
 2.0.0 — Research-grounded rewrite. Added: Service-as-Software framing (sell completed work,
         not seats); STAGE 4.5 Proof of Wallet (pre-sell before build — antidote to the 42%
         no-market-need failure mode); Mom Test discipline in STAGE 4; painkiller-vs-vitamin
