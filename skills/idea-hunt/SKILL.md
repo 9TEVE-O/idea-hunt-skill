@@ -314,6 +314,12 @@ Now — and only now — generate the execution plan. Decision-grade, not a 44-i
 ---
 <!--
 Changelog
+2.1.0 — Packaged as a Claude Code plugin (plugin.json, marketplace.json, tests). Added:
+        scripts/score.py (applies the Stage 3 rule mechanically), scripts/new_hunt.py (hunt
+        artifact scaffold), agents/pain-miner.md (Stage 1 evidence gatherer), evidence-integrity
+        and ethics-screen operating rules, and a caveat that the thesis statistics are
+        secondary-source claims. Changed: Upwork/Fiverr postings are recorded as requested
+        rates (stated intent to pay), not completed spend. Stage 3 rule and gate names unchanged.
 2.0.0 — Research-grounded rewrite. Added: Service-as-Software framing (sell completed work,
         not seats); STAGE 4.5 Proof of Wallet (pre-sell before build — antidote to the 42%
         no-market-need failure mode); Mom Test discipline in STAGE 4; painkiller-vs-vitamin

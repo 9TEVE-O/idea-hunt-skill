@@ -16,18 +16,20 @@ MIN_TOTAL = 8
 
 
 def evaluate(candidate: dict) -> dict:
+    """Score one candidate against the gates, raising ValueError on malformed input."""
     if not isinstance(candidate, dict) or not isinstance(candidate.get("name"), str):
         raise ValueError(f"each candidate must be an object with a string 'name', got {candidate!r}")
+    name = repr(candidate["name"])  # repr keeps every error message on one line
     scores = candidate.get("scores")
     if not isinstance(scores, dict):
-        raise ValueError(f"{candidate['name']}: 'scores' must be an object")
+        raise ValueError(f"{name}: 'scores' must be an object")
     missing = [g for g in GATES if g not in scores]
     if missing:
-        raise ValueError(f"{candidate['name']}: missing gates {missing}")
+        raise ValueError(f"{name}: missing gates {missing}")
     for g in GATES:
         v = scores[g]
         if type(v) is not int or v not in (0, 1, 2):
-            raise ValueError(f"{candidate['name']}: {g} must be the integer 0, 1 or 2")
+            raise ValueError(f"{name}: {g} must be the integer 0, 1 or 2")
     total = sum(scores[g] for g in GATES)
     reasons = [f"hard-fail on {g}" for g in GATES if scores[g] == 0]
     if total < MIN_TOTAL:
@@ -41,7 +43,21 @@ def evaluate(candidate: dict) -> dict:
     }
 
 
+def evaluate_all(data: object) -> list:
+    """Evaluate a non-empty JSON list of candidates, rejecting duplicate names."""
+    if not isinstance(data, list) or not data:
+        raise ValueError("input must be a non-empty JSON list")
+    results = [evaluate(c) for c in data]
+    seen = set()
+    for r in results:
+        if r["name"] in seen:
+            raise ValueError(f"duplicate candidate name {r['name']!r}")
+        seen.add(r["name"])
+    return results
+
+
 def render(results: list) -> str:
+    """Render evaluated candidates as a ranked Markdown table with a survivor count."""
     ranked = sorted(results, key=lambda r: (not r["survives"], -r["total"]))
     head = "| Candidate | " + " | ".join(GATES) + " | Total | Verdict |"
     sep = "|" + "---|" * (len(GATES) + 3)
@@ -57,17 +73,19 @@ def render(results: list) -> str:
 
 
 def main() -> int:
+    """Read candidates from a file or stdin, print the scored table, and return the exit code."""
     if "-h" in sys.argv or "--help" in sys.argv:
         print(__doc__)
         return 0
     try:
-        raw = open(sys.argv[1]).read() if len(sys.argv) > 1 else sys.stdin.read()
-        data = json.loads(raw)
-        if not isinstance(data, list) or not data:
-            raise ValueError("input must be a non-empty JSON list")
-        print(render([evaluate(c) for c in data]))
-    except (ValueError, OSError, KeyError) as e:
-        print(f"error: {e}", file=sys.stderr)
+        if len(sys.argv) > 1:
+            with open(sys.argv[1], encoding="utf-8") as f:
+                raw = f.read()
+        else:
+            raw = sys.stdin.buffer.read().decode("utf-8")
+        print(render(evaluate_all(json.loads(raw))))
+    except (ValueError, OSError) as e:
+        print("error: " + " ".join(str(e).split()), file=sys.stderr)
         return 2
     return 0
 

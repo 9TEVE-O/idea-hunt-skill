@@ -1,6 +1,7 @@
 # idea-hunt: {{TITLE}}
 
 _Started {{DATE}} · slug `{{SLUG}}`_
+<!-- idea-hunt-title-id: {{TITLE_ID}} -->
 
 ## Stage 0 — Frame
 - **Domain I know:**
@@ -19,7 +20,7 @@ Every row needs a source URL. Mark each quote `verbatim` or `paraphrase`; never 
 1.
 
 ## Stage 3 — Kill-gate scores
-Fill `candidates.json` (see `scripts/score.py --help`), run the scorer, paste output here.
+Fill `candidates.json` (see `python3 ${CLAUDE_SKILL_DIR}/scripts/score.py --help`), run the scorer, paste output here.
 
 ## Stage 4 — Demand reality (office-hours + Mom Test)
 
