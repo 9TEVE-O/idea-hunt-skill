@@ -19,7 +19,7 @@ def normalize_title(title: str) -> str:
 
 
 def title_id(title: str) -> str:
-    """Return a stable SHA-256 hex id for a normalized title."""
+    """Return a stable SHA-256 hex id for a title."""
     return hashlib.sha256(title.encode("utf-8")).hexdigest()
 
 
