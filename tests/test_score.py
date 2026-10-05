@@ -1,3 +1,5 @@
+import contextlib
+import io
 import json
 import os
 import pathlib
@@ -5,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 SCRIPTS = pathlib.Path(__file__).resolve().parent.parent / "skills" / "idea-hunt" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
@@ -95,6 +98,25 @@ class ScoreTests(unittest.TestCase):
                                capture_output=True, text=True, encoding="utf-8", env=env)
             self.assertEqual(r.returncode, 0, r.stderr)
             self.assertIn("法律事務所", r.stdout)
+
+    def test_file_input_is_closed_after_reading(self):
+        with tempfile.TemporaryDirectory() as d:
+            f = pathlib.Path(d) / "candidates.json"
+            f.write_text(json.dumps([cand("a")]), encoding="utf-8")
+            opened = []
+            real_open = open
+
+            def tracking_open(*args, **kwargs):
+                handle = real_open(*args, **kwargs)
+                opened.append((handle, kwargs.get("encoding")))
+                return handle
+
+            with mock.patch("builtins.open", tracking_open), \
+                    mock.patch.object(sys, "argv", ["score.py", str(f)]), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(score.main(), 0)
+            self.assertEqual(opened[0][1], "utf-8")
+            self.assertTrue(opened[0][0].closed)
 
     def test_cli_exit_codes(self):
         ok = subprocess.run([sys.executable, str(SCRIPTS / "score.py")], input=json.dumps([cand("a")]),

@@ -32,7 +32,8 @@ def slugify(text: str) -> str:
     if not slug:  # e.g. punctuation-only title: keep distinct titles on distinct files
         return "hunt-" + digest
     if len(slug.encode("utf-8")) > MAX_SLUG_BYTES:
-        cut = slug.encode("utf-8")[:MAX_SLUG_BYTES].decode("utf-8", errors="ignore")
+        prefix_bytes = MAX_SLUG_BYTES - len(digest) - 1
+        cut = slug.encode("utf-8")[:prefix_bytes].decode("utf-8", errors="ignore")
         return cut.strip("-") + "-" + digest
     return slug
 
@@ -66,8 +67,8 @@ def belongs_to(path: pathlib.Path, tid: str) -> bool:
 
 def scaffold(title: str, directory: str) -> str:
     """Create or resume the artifact for title and return a one-line status message."""
-    title = normalize_title(title)
     tid = title_id(title)
+    title = normalize_title(title)
     slug = slugify(title)
     body = render(title, slug, tid)
     out = pathlib.Path(directory) / f"idea-hunt-{slug}.md"

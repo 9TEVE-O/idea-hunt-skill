@@ -38,7 +38,7 @@ class SlugTests(unittest.TestCase):
     def test_slug_is_bounded_and_keeps_long_titles_distinct(self):
         a, b = "a" * 300, "a" * 299 + "b"
         for title in (a, "法" * 300):
-            self.assertLessEqual(len(new_hunt.slugify(title).encode("utf-8")), 120)
+            self.assertLessEqual(len(new_hunt.slugify(title).encode("utf-8")), new_hunt.MAX_SLUG_BYTES)
         self.assertNotEqual(new_hunt.slugify(a), new_hunt.slugify(b))
 
 
@@ -80,6 +80,14 @@ class CliTests(unittest.TestCase):
             self.assertIn("different title", r.stdout)
             self.assertEqual(len(artifacts(d)), 2)
             self.assertIn("resuming", run("legal intake", d).stdout)
+            self.assertEqual(len(artifacts(d)), 2)
+
+    def test_titles_with_distinct_whitespace_are_not_silently_resumed(self):
+        with tempfile.TemporaryDirectory() as d:
+            run("Legal intake", d)
+            r = run("Legal  intake", d)
+            self.assertEqual(r.returncode, 0)
+            self.assertIn("different title", r.stdout)
             self.assertEqual(len(artifacts(d)), 2)
 
     def test_combining_mark_titles_get_separate_files(self):
